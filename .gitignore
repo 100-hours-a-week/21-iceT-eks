@@ -2,3 +2,10 @@ koco/backend/.terraform/
 koco/backend/*.tfstate
 koco/backend/*.tfstate.*
 
+koco/environments/dev/.terraform/
+koco/environments/dev/*.tfstate
+koco/environments/dev/*.tfstate.*
+
+koco/environments/prod/.terraform/
+koco/environments/prod/*.tfstate
+koco/environments/prod/*.tfstate.*
