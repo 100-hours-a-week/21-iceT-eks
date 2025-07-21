@@ -37,3 +37,17 @@ module "openvpn" {
     subnet_id = module.koco_vpc.public_az1_id
     vpc_security_group_ids = [module.koco_security_group.sg_openvpn_id]
 }
+
+module "db" {
+    source = "../../modules/db_instance"
+
+    stage               = var.stage
+    servicename         = var.servicename
+    tags                = var.openvpn_tags
+
+    subnet_private_id = module.koco_vpc.db_az1_id
+    security_group_db_sg_id = module.koco_security_group.sg_db_id
+    ip = var.db_ip
+
+    depends_on = [ module.koco_vpc ]
+}
