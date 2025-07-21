@@ -52,3 +52,11 @@ variable "subnet_db_az2" {
   type = string
   default = "10.120.160.0/24"
 }
+
+#openvpn
+variable "openvpn_tags" {
+  type = map(string)
+  default = {
+    "name" = "koco-openvpn"
+  }
+}
