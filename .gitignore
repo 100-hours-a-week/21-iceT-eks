@@ -1,0 +1,4 @@
+koco/backend/.terraform/
+koco/backend/*.tfstate
+koco/backend/*.tfstate.*
+
