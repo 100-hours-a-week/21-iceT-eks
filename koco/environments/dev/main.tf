@@ -25,3 +25,15 @@ module "koco_security_group" {
   vpc_cidr_block = var.vpc_ip_range
   node_group_sg_id = ""
 }
+
+module "openvpn" {
+    source = "../../modules/openvpn"
+    
+    stage               = var.stage
+    servicename         = var.servicename
+    tags                = var.openvpn_tags
+    
+    vpc_id = module.koco_vpc.vpc_id
+    subnet_id = module.koco_vpc.public_az1_id
+    vpc_security_group_ids = [module.koco_security_group.sg_openvpn_id]
+}
