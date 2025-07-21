@@ -60,3 +60,16 @@ variable "openvpn_tags" {
     "name" = "koco-openvpn"
   }
 }
+
+#db
+variable "db_tags" {
+  type = map(string)
+  default = {
+    "name" = "koco-db"
+  }
+}
+
+variable "db_ip" {
+  type = string
+  default = "10.120.150.100"
+}
