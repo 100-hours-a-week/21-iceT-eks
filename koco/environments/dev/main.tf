@@ -167,6 +167,20 @@ module "helm" {
 
 module "s3_static_site" {
   source              = "../../modules/s3_static_site"
-  cloudfront_oai_arn  = ""
+  cloudfront_oai_arn  = module.cdn.cloudfront_oai_arn
   bucket_name = var.s3-static-bucket-name
+}
+
+module "cdn" {
+  source         = "../../modules/cdn"
+  s3_bucket_name = module.s3_static_site.s3_bucket_name
+  alb_dns_name = module.helm.alb_dns
+  domain_name = var.domain_name
+  acm_certificate_arn = var.acm_certificate_arn
+  depends_on = [ module.helm ]
+}
+
+module "ecr" {
+    source = "../../modules/ecr"
+    repository_name = var.repository_name
 }

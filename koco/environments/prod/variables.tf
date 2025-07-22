@@ -73,10 +73,10 @@ variable "db_ip" {
   default = "10.120.150.100"
 }
 
-#helm
+#helm, cdn
 variable "domain_name" {
   type = string
-  default = ""
+  default = "ktbkoco.com"
 }
 
 variable "acm_certificate_arn" {
@@ -88,4 +88,10 @@ variable "acm_certificate_arn" {
 variable "s3-static-bucket-name" {
   type = string
   default = "prod-koco-front-s3"
+}
+
+#ecr
+variable "repository_name" {
+  type = string
+  default = "prod-ecr-repo"
 }
