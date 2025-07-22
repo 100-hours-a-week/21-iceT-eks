@@ -1,3 +1,7 @@
+locals {
+  cluster_name = "koco-prod-cluster"
+  oidc_url_without_https = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
+}
 module "koco_vpc" {
   source              = "../../modules/vpc"
 
@@ -50,4 +54,87 @@ module "db" {
     ip = var.db_ip
 
     depends_on = [ module.koco_vpc ]
+}
+
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  
+  version = "~>20.0"
+  cluster_name    = local.cluster_name
+  cluster_version = "1.32"
+  #create_node_security_group = false
+
+    cluster_addons = {
+    coredns = {
+      most_recent = true
+    }
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent = true
+    }
+    eks-pod-identity-agent = {
+      most_recent = true
+    }
+  }
+
+  vpc_id                         = module.koco_vpc.vpc_id
+  subnet_ids                     = [module.koco_vpc.service_az1_id, module.koco_vpc.service_az2_id]
+  cluster_endpoint_public_access = true
+  cluster_endpoint_private_access = true
+
+  eks_managed_node_group_defaults = {
+    ami_type = "AL2023_x86_64_STANDARD" #"AL2_x86_64"
+    iam_role_arn = module.iam.eks_node_group_role_arn
+  }
+
+  eks_managed_node_groups = {
+
+    # Infra용 (ArgoCD, ELK 등)
+    infra = {
+      name           = "koco-prod-infra-node"
+      instance_types = ["t3.medium"]
+      min_size       = 4
+      max_size       = 5
+      desired_size   = 4
+      disk_size = 30
+
+      labels = {
+        "node-group" = "infra"
+      }
+    }
+
+    # App용 (Springboot)
+    app = { 
+      name = "koco-prod-app-node"
+
+      instance_types = ["t3.medium"]
+
+      min_size     = 1
+      max_size     = 2
+      desired_size = 2
+      disk_size = 3
+
+      #   taints = [
+      #     {
+      #       key    = "dedicated"
+      #       value  = "app"
+      #       effect = "NO_SCHEDULE"
+      #     }
+      #   ]
+
+      labels = {
+        "node-group" = "app"
+      }
+    }
+  }
+
+  # Cluster access entry
+  # To add the current caller identity as an administrator
+  enable_cluster_creator_admin_permissions = true
+}
+
+module "iam" {
+  source = "../../modules/iam"
 }
