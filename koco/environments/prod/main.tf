@@ -178,3 +178,8 @@ module "cdn" {
   acm_certificate_arn = var.acm_certificate_arn
   depends_on = [ module.helm ]
 }
+
+module "ecr" {
+    source = "../../modules/ecr"
+    repository_name = var.repository_name
+}

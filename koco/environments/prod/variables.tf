@@ -89,3 +89,9 @@ variable "s3-static-bucket-name" {
   type = string
   default = "prod-koco-front-s3"
 }
+
+#ecr
+variable "repository_name" {
+  type = string
+  default = "dev-ecr-repo"
+}
