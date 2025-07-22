@@ -144,4 +144,11 @@ module "sa" {
 
 module "iam" {
   source = "../../modules/iam"
+
+  role-alc-oidc_without_https = local.oidc_url_without_https
+  role-alc-namespace = module.sa.sa-namespace
+  role-alc-sa_name = module.sa.sa-name
+
+  oidc_provider_arn = module.eks.oidc_provider_arn
+  oidc_url_without_https = local.oidc_url_without_https
 }
