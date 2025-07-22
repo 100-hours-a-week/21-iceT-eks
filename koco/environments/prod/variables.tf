@@ -68,8 +68,18 @@ variable "db_tags" {
     "name" = "koco-db"
   }
 }
-
 variable "db_ip" {
   type = string
   default = "10.120.150.100"
+}
+
+#helm
+variable "domain_name" {
+  type = string
+  default = ""
+}
+
+variable "acm_certificate_arn" {
+  type = string
+  default = ""
 }
