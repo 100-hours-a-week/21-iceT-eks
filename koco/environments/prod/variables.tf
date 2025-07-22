@@ -93,5 +93,5 @@ variable "s3-static-bucket-name" {
 #ecr
 variable "repository_name" {
   type = string
-  default = "dev-ecr-repo"
+  default = "prod-ecr-repo"
 }
