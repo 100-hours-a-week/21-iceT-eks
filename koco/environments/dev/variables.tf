@@ -73,10 +73,10 @@ variable "db_ip" {
   default = "10.110.150.100"
 }
 
-#helm
+#helm, cdn
 variable "domain_name" {
   type = string
-  default = ""
+  default = "koco-test.click"
 }
 
 variable "acm_certificate_arn" {
