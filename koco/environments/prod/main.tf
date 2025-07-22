@@ -143,4 +143,23 @@ module "sa" {
 
 module "iam" {
   source = "../../modules/iam"
+
+  role-alc-oidc_without_https = local.oidc_url_without_https
+  role-alc-namespace = module.sa.sa-namespace
+  role-alc-sa_name = module.sa.sa-name
+
+  oidc_provider_arn = module.eks.oidc_provider_arn
+  oidc_url_without_https = local.oidc_url_without_https
+}
+
+module "helm" {
+    source = "../../modules/helm"
+    vpc_id = module.koco_vpc.vpc_id
+    domain_name = var.domain_name
+    acm_certificate_arn = var.acm_certificate_arn
+    cluster_name = local.cluster_name
+
+    providers = { helm = helm.eks }
+
+    depends_on = [module.koco_vpc, module.eks, module.sa, module.iam] 
 }
