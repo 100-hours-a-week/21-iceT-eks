@@ -136,7 +136,12 @@ module "eks" {
   enable_cluster_creator_admin_permissions = true
 }
 
+module "sa" {
+    source = "../../modules/service_account"
+
+    depends_on = [module.eks]
+}
+
 module "iam" {
   source = "../../modules/iam"
-
 }
