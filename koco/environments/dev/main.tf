@@ -164,3 +164,9 @@ module "helm" {
 
     depends_on = [module.koco_vpc, module.eks, module.sa, module.iam] 
 }
+
+module "s3_static_site" {
+  source              = "../../modules/s3_static_site"
+  cloudfront_oai_arn  = ""
+  bucket_name = var.s3-static-bucket-name
+}

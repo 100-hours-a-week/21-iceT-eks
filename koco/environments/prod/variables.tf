@@ -83,3 +83,9 @@ variable "acm_certificate_arn" {
   type = string
   default = ""
 }
+
+#s3-static-site
+variable "s3-static-bucket-name" {
+  type = string
+  default = "prod-koco-front-s3"
+}
